@@ -1,0 +1,47 @@
+services:
+  web-odoo-18:
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
+    image: odoo:18.0
+    container_name: odoo_18
+    depends_on:
+      - db-odoo-18
+    ports:
+      - "8018:8069" # Akses via browser: http://localhost:8018
+    volumes:
+      - odoo18_data:/var/lib/odoo 
+      - ./config:/etc/odoo
+      - ./addons/custom:/mnt/extra-addons/custom
+    # INSTALL
+    # command: odoo -i ian_car_repair -d test --stop-after-init
+    # UPDATE
+    command: odoo -u ian_car_repair -d test
+    # UNINSTALL MODULE
+    # command: odoo -i -ian_car_repair -d test --stop-after-init
+    environment:
+      - HOST=db-odoo-18
+      - USER=odoo
+      - PASSWORD=odoo
+      - PGHOST=db-odoo-18
+      - PGUSER=odoo
+      - PGPASSWORD=odoo
+    restart: always 
+
+  db-odoo-18:
+    image: postgres:16-alpine
+    container_name: db_odoo_18
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=odoo
+      - POSTGRES_USER=odoo
+      - PGDATA=/var/lib/postgresql/data/pgdata 
+    volumes:
+      - postgresql_data_18:/var/lib/postgresql/data/pgdata 
+    ports:
+      - "5418:5432"
+    restart: always
+  
+volumes:
+  postgresql_data_18:
+  odoo18_data:

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="sale_order_form_car_repair" model="ir.ui.view">
+        <field name="name">sale.order.form.car.repair</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_create_work_order_invoice" type="object"
+                        string="Generate Work Order Invoice"
+                        class="btn-primary"
+                        invisible="not car_work_order_id"/>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="car_diagnosis_id"
+                       string="Car Diagnosis"
+                       readonly="1"/>
+                <field name="car_work_order_id"
+                       string="Car Work Order"
+                       readonly="1"/>
+                <field name="car_repair_order_id"
+                       string="Car Repair Order"
+                       readonly="1"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

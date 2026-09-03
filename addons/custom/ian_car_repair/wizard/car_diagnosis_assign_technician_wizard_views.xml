@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="car_diagnosis_assign_technician_wizard_form" model="ir.ui.view">
+        <field name="name">car.diagnosis.assign.technician.wizard.form</field>
+        <field name="model">car.diagnosis.assign.technician.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Assign Technician">
+                <group>
+                    <field name="repair_order_id" readonly="1"/>
+                    <field name="technician_id"/>
+                </group>
+                <footer>
+                    <button name="action_assign" type="object"
+                            string="Assign"
+                            class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary"
+                            special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

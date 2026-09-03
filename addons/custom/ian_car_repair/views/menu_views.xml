@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Root menu -->
+    <menuitem id="menu_car_repair_root"
+              name="Car Repair"
+              sequence="100"/>
+
+
+    <menuitem id="menu_car_repair_submenu"
+              parent="menu_car_repair_root"
+              name="Car Repair"
+              sequence="10"/>
+
+    <menuitem id="menu_car_repair_billing"
+               parent="menu_car_repair_root"
+               action="action_car_repair_billing"
+               name="Billing"
+               groups="ian_car_repair.group_car_repair_manager,ian_car_repair.group_car_repair_director"
+               sequence="20"/>
+    
+    <menuitem id="menu_car_repair_checklists"
+              name="Checklists"
+              parent="menu_car_repair_root"
+              action="car_repair_checklist_action"
+              sequence="30"/>
+
+    <!-- Submenus under Car Repair -->
+    <menuitem id="menu_car_repair_repair_orders"
+              name="Repair Orders"
+              parent="menu_car_repair_submenu"
+              action="car_repair_order_action"
+              sequence="10"/>
+
+    <menuitem id="menu_car_repair_diagnosis"
+              name="Diagnosis"
+              parent="menu_car_repair_submenu"
+              action="car_diagnosis_action"
+              sequence="30"/>
+
+
+    <menuitem id="menu_car_repair_work_orders"
+              name="Work Orders"
+              parent="menu_car_repair_submenu"
+              action="car_work_order_action"
+              sequence="40"/>
+
+</odoo>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Checklists -->
+    <record id="checklist_engine_oil" model="car.repair.checklist">
+        <field name="name">Engine Oil and Filter</field>
+    </record>
+    <record id="checklist_brake_pads" model="car.repair.checklist">
+        <field name="name">Brake Pads Check</field>
+    </record>
+    <record id="checklist_air_conditioning" model="car.repair.checklist">
+        <field name="name">Air Conditioning Service</field>
+    </record>
+    <record id="checklist_tire_rotation" model="car.repair.checklist">
+        <field name="name">Tire Rotation and Balancing</field>
+    </record>
+
+    <!-- Fleet vehicle brands / models -->
+    <record id="fleet_brand_toyota" model="fleet.vehicle.model.brand">
+        <field name="name">Toyota</field>
+    </record>
+    <record id="fleet_model_camry" model="fleet.vehicle.model">
+        <field name="name">Camry</field>
+        <field name="brand_id" ref="fleet_brand_toyota"/>
+    </record>
+
+    <!-- Fleet vehicle -->
+    <record id="fleet_vehicle_demo" model="fleet.vehicle">
+        <field name="license_plate">B 1234 CDE</field>
+        <field name="model_id" ref="fleet_model_camry"/>
+        <field name="driver_id" ref="base.public_partner"/>
+    </record>
+
+    <!-- Demo partner -->
+    <record id="demo_partner_ahmad" model="res.partner">
+        <field name="name">Ahmad Santoso</field>
+        <field name="phone">+6281234567890</field>
+        <field name="email">ahmad@example.com</field>
+    </record>
+
+    <!-- Repair Order -->
+    <record id="repair_order_demo" model="car.repair.order">
+        <field name="partner_id" ref="demo_partner_ahmad"/>
+        <field name="phone">+6281234567890</field>
+        <field name="email">ahmad@example.com</field>
+        <field name="subject">Engine oil change and brake inspection</field>
+        <field name="priority">2</field>
+        <field name="state">draft</field>
+        <field name="line_ids" eval="[(0, 0, {
+            'car_id': ref('fleet_vehicle_demo'),
+            'license_plate': 'B 1234 CDE',
+            'model_id': ref('fleet_model_camry'),
+            'chassis_number': '4T1BF3EK5AU123456',
+            'fuel_type': 'gasoline',
+            'under_guarantee': 'no',
+            'nature_of_service': 'Regular maintenance',
+        })]"/>
+        <field name="checklist_ids" eval="[(6, 0, [
+            ref('checklist_engine_oil'),
+            ref('checklist_brake_pads'),
+        ])]"/>
+    </record>
+
+    <!-- Work Order demo -->
+    <record id="work_order_demo" model="car.work.order">
+        <field name="repair_order_id" ref="repair_order_demo"/>
+        <field name="technician_id" ref="base.public_user"/>
+        <field name="date" eval="fields.Date.today()"/>
+        <field name="priority">2</field>
+        <field name="state">draft</field>
+    </record>
+
+</odoo>
