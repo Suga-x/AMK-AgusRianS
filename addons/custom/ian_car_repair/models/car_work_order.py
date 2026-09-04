@@ -42,6 +42,9 @@ class CarWorkOrder(models.Model):
     technician_id = fields.Many2one(
         'res.users',
         string='Technician',
+        related='repair_order_id.assigned_id',
+        store=True,
+        readonly=True,
         tracking=True,
     )
     date = fields.Date(
@@ -103,7 +106,6 @@ class CarWorkOrder(models.Model):
             record.write({
                 'state': 'pending',
                 'duration_hours': record.duration_hours + elapsed,
-                'date_start': False,
             })
 
     def action_pending(self):
@@ -129,7 +131,6 @@ class CarWorkOrder(models.Model):
                 'state': 'finished',
                 'date_end': now,
                 'duration_hours': total_hours,
-                'date_start': False,
             })
             if record.repair_order_id:
                 record.repair_order_id.action_to_done()

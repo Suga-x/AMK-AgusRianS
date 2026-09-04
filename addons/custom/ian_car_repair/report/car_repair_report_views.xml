@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================================
+         Car Label Report
+         Compact label/sticker printout (hanging/windshield label)
+         ============================================================ -->
+    <record id="action_report_car_label" model="ir.actions.report">
+        <field name="name">Car Label</field>
+        <field name="model">car.repair.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ian_car_repair.report_car_label_template</field>
+        <field name="report_file">ian_car_repair.report_car_label_template</field>
+        <field name="binding_model_id" ref="model_car_repair_order"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- ============================================================
+         Car Receipt Report
+         Vehicle handover receipt for the customer
+         ============================================================ -->
+    <record id="action_report_car_receipt" model="ir.actions.report">
+        <field name="name">Car Receipt</field>
+        <field name="model">car.repair.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ian_car_repair.report_car_receipt_template</field>
+        <field name="report_file">ian_car_repair.report_car_receipt_template</field>
+        <field name="binding_model_id" ref="model_car_repair_order"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- ============================================================
+         Car Checklist Report
+         Initial physical condition checklist attached to the RO
+         ============================================================ -->
+    <record id="action_report_car_checklist" model="ir.actions.report">
+        <field name="name">Car Checklist</field>
+        <field name="model">car.repair.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ian_car_repair.report_car_checklist_template</field>
+        <field name="report_file">ian_car_repair.report_car_checklist_template</field>
+        <field name="binding_model_id" ref="model_car_repair_order"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- ============================================================
+         Car Diagnosis Request Report
+         Diagnosis work instruction sheet for the technician
+         ============================================================ -->
+    <record id="action_report_car_diagnosis_request" model="ir.actions.report">
+        <field name="name">Car Diagnosis Request</field>
+        <field name="model">car.repair.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ian_car_repair.report_car_diagnosis_request_template</field>
+        <field name="report_file">ian_car_repair.report_car_diagnosis_request_template</field>
+        <field name="binding_model_id" ref="model_car_repair_order"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- ============================================================
+         Car Diagnosis Result Report
+         Technician inspection result (result, hours, spare parts)
+         ============================================================ -->
+    <record id="action_report_car_diagnosis_result" model="ir.actions.report">
+        <field name="name">Car Diagnosis Result</field>
+        <field name="model">car.repair.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ian_car_repair.report_car_diagnosis_result_template</field>
+        <field name="report_file">ian_car_repair.report_car_diagnosis_result_template</field>
+        <field name="binding_model_id" ref="model_car_repair_order"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- ============================================================
+         Car Work Orders Report
+         Repair work details (hours, status, technician)
+         ============================================================ -->
+    <record id="action_report_car_work_orders" model="ir.actions.report">
+        <field name="name">Car Work Orders</field>
+        <field name="model">car.repair.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ian_car_repair.report_car_work_orders_template</field>
+        <field name="report_file">ian_car_repair.report_car_work_orders_template</field>
+        <field name="binding_model_id" ref="model_car_repair_order"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- ============================================================
+         Car Invoice Report
+         Cost estimate / billing summary (service + spare parts)
+         sourced from the linked Sale Order / Invoice
+         ============================================================ -->
+    <record id="action_report_car_invoice" model="ir.actions.report">
+        <field name="name">Car Invoice</field>
+        <field name="model">car.repair.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ian_car_repair.report_car_invoice_template</field>
+        <field name="report_file">ian_car_repair.report_car_invoice_template</field>
+        <field name="binding_model_id" ref="model_car_repair_order"/>
+        <field name="binding_type">report</field>
+    </record>
+
+</odoo>

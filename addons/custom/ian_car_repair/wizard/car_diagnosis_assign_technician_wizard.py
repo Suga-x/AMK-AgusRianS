@@ -29,21 +29,14 @@ class CarDiagnosisAssignTechnicianWizard(models.TransientModel):
         return res
 
     def action_assign(self):
-        """Write technician to the repair order, change state, and propagate
-        the technician to all linked car.diagnosis records."""
-        self.ensure_one()
-        repair_order = self.repair_order_id
+        """Assign a technician to the repair order.
 
-        # Write technician only (do not force state; diagnosis/quotation
-        # flow advances the state via its own buttons)
-        repair_order.write({
+        The technician is stored on ``car.repair.order.assigned_id`` and is
+        automatically propagated to all linked diagnoses and work orders via
+        their related ``technician_id`` fields.
+        """
+        self.ensure_one()
+        self.repair_order_id.write({
             'assigned_id': self.technician_id.id,
         })
-
-        # Propagate technician to all linked diagnoses
-        if repair_order.diagnosis_ids:
-            repair_order.diagnosis_ids.write({
-                'technician_id': self.technician_id.id,
-            })
-
         return {'type': 'ir.actions.act_window_close'}

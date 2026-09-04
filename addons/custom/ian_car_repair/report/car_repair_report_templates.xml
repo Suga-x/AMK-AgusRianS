@@ -1,0 +1,544 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================================
+         1. CAR LABEL REPORT
+         Compact label/sticker (hanging/windshield label)
+         ============================================================ -->
+    <template id="report_car_label_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)"/>
+                    <div class="page">
+                        <h2 style="text-align: center; font-size: 18px; font-weight: bold; margin: 0 0 12px 0; letter-spacing: 1px;">CAR REPAIR LABEL</h2>
+                        <div style="border: 2px solid #333; border-radius: 6px; padding: 15px;">
+                            <table style="width: 100%; border-collapse: collapse;">
+                                <tr>
+                                    <td style="padding: 5px 10px; font-weight: bold; width: 40%; border-bottom: 1px solid #eee;">Ref. No.</td>
+                                    <td style="padding: 5px 10px; text-align: right; border-bottom: 1px solid #eee;"><span t-field="o.name"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 5px 10px; font-weight: bold; border-bottom: 1px solid #eee;">License Plate</td>
+                                    <td style="padding: 5px 10px; text-align: right; border-bottom: 1px solid #eee;">
+                                        <span t-esc="o.line_ids[:1].license_plate or ''"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 5px 10px; font-weight: bold; border-bottom: 1px solid #eee;">Model</td>
+                                    <td style="padding: 5px 10px; text-align: right; border-bottom: 1px solid #eee;">
+                                        <span t-esc="o.line_ids[:1].model_id.name or ''"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 5px 10px; font-weight: bold; border-bottom: 1px solid #eee;">Client</td>
+                                    <td style="padding: 5px 10px; text-align: right; border-bottom: 1px solid #eee;"><span t-field="o.partner_id.name"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 5px 10px; font-weight: bold;">Received Date</td>
+                                    <td style="padding: 5px 10px; text-align: right;">
+                                        <span t-field="o.date_receipt" t-options="{'widget': 'date'}"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <!-- ============================================================
+         2. CAR RECEIPT REPORT
+         Vehicle handover receipt for the customer
+         ============================================================ -->
+    <template id="report_car_receipt_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)"/>
+                    <div class="page">
+                        <!-- Title -->
+                        <h2 style="text-align: center; font-size: 20px; font-weight: bold; margin: 0 0 2px 0; letter-spacing: 1px;">VEHICLE RECEIPT</h2>
+                        <p style="text-align: center; font-size: 11px; color: #666; margin: 0 0 15px 0;">Tanda Terima Penyerahan Kendaraan</p>
+
+                        <!-- Workshop info -->
+                        <div style="border: 1px solid #ccc; border-radius: 4px; padding: 8px 12px; background-color: #f5f5f5; margin-bottom: 15px; font-size: 12px;">
+                            <strong>Workshop:</strong> <span t-field="o.env.company.name"/><br t-if="o.env.company.street"/>
+                            <span t-if="o.env.company.street"><span t-field="o.env.company.street"/><br/></span>
+                            <span t-if="o.env.company.phone">Tel: <span t-field="o.env.company.phone"/></span>
+                        </div>
+
+                        <!-- Client data -->
+                        <h5 style="font-size: 14px; font-weight: bold; border-bottom: 2px solid #333; padding-bottom: 4px; margin: 0 0 8px 0;">Client Data</h5>
+                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+                            <tr>
+                                <td style="padding: 5px 8px; font-weight: bold; width: 25%; border: 1px solid #ddd; background-color: #f5f5f5;">Name</td>
+                                <td style="padding: 5px 8px; border: 1px solid #ddd;"><span t-field="o.partner_id.name"/></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 5px 8px; font-weight: bold; border: 1px solid #ddd; background-color: #f5f5f5;">Phone</td>
+                                <td style="padding: 5px 8px; border: 1px solid #ddd;"><span t-field="o.phone"/></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 5px 8px; font-weight: bold; border: 1px solid #ddd; background-color: #f5f5f5;">Email</td>
+                                <td style="padding: 5px 8px; border: 1px solid #ddd;"><span t-field="o.email"/></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 5px 8px; font-weight: bold; border: 1px solid #ddd; background-color: #f5f5f5;">Address</td>
+                                <td style="padding: 5px 8px; border: 1px solid #ddd;"><span t-field="o.address"/></td>
+                            </tr>
+                        </table>
+
+                        <!-- Vehicle details -->
+                        <h5 style="font-size: 14px; font-weight: bold; border-bottom: 2px solid #333; padding-bottom: 4px; margin: 0 0 8px 0;">Vehicle Details</h5>
+                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+                            <tr>
+                                <td style="padding: 5px 8px; font-weight: bold; width: 22%; border: 1px solid #ddd; background-color: #f5f5f5;">License Plate</td>
+                                <td style="padding: 5px 8px; width: 28%; border: 1px solid #ddd;"><span t-esc="o.line_ids[:1].license_plate or ''"/></td>
+                                <td style="padding: 5px 8px; font-weight: bold; width: 22%; border: 1px solid #ddd; background-color: #f5f5f5;">Model</td>
+                                <td style="padding: 5px 8px; width: 28%; border: 1px solid #ddd;"><span t-esc="o.line_ids[:1].model_id.name or ''"/></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 5px 8px; font-weight: bold; border: 1px solid #ddd; background-color: #f5f5f5;">Chassis No.</td>
+                                <td style="padding: 5px 8px; border: 1px solid #ddd;"><span t-esc="o.line_ids[:1].chassis_number or ''"/></td>
+                                <td style="padding: 5px 8px; font-weight: bold; border: 1px solid #ddd; background-color: #f5f5f5;">Fuel Type</td>
+                                <td style="padding: 5px 8px; border: 1px solid #ddd;"><span t-esc="o.line_ids[:1].fuel_type or ''"/></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 5px 8px; font-weight: bold; border: 1px solid #ddd; background-color: #f5f5f5;">Odometer</td>
+                                <td style="padding: 5px 8px; border: 1px solid #ddd;"><span t-esc="o.line_ids[:1].odometer or 0.0"/></td>
+                                <td style="padding: 5px 8px; font-weight: bold; border: 1px solid #ddd; background-color: #f5f5f5;">Received Date</td>
+                                <td style="padding: 5px 8px; border: 1px solid #ddd;"><span t-field="o.date_receipt" t-options="{'widget': 'datetime'}"/></td>
+                            </tr>
+                        </table>
+
+                        <!-- Subject / complaint -->
+                        <h5 style="font-size: 14px; font-weight: bold; border-bottom: 2px solid #333; padding-bottom: 4px; margin: 0 0 8px 0;">Subject / Complaint</h5>
+                        <div style="border: 1px solid #ddd; border-radius: 4px; padding: 8px 12px; margin-bottom: 15px; min-height: 40px;">
+                            <span t-field="o.subject"/>
+                        </div>
+
+                        <!-- Signature columns -->
+                        <table style="width: 100%; border-collapse: collapse; margin-top: 60px;">
+                            <tr>
+                                <td style="width: 45%; text-align: center; padding-top: 80px; border-top: 1px solid #333;">
+                                    <strong>Receiver</strong><br/>
+                                    <span style="font-size: 10px; color: #666;">(Name &amp; Signature)</span>
+                                </td>
+                                <td style="width: 10%;"></td>
+                                <td style="width: 45%; text-align: center; padding-top: 80px; border-top: 1px solid #333;">
+                                    <strong>Client</strong><br/>
+                                    <span style="font-size: 10px; color: #666;">(Name &amp; Signature)</span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <!-- ============================================================
+         3. CAR CHECKLIST REPORT
+         Initial physical condition checklist attached to the RO
+         ============================================================ -->
+    <template id="report_car_checklist_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)"/>
+                    <div class="page">
+                        <!-- Title -->
+                        <h2 style="text-align: center; font-size: 20px; font-weight: bold; margin: 0 0 2px 0; letter-spacing: 1px;">CAR CHECKLIST</h2>
+                        <p style="text-align: center; font-size: 11px; color: #666; margin: 0 0 15px 0;">Initial Physical Condition Checklist</p>
+
+                        <!-- Header info -->
+                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+                            <tr>
+                                <td style="padding: 4px 0; width: 50%;"><strong>Ref. No.:</strong> <span t-field="o.name"/></td>
+                                <td style="padding: 4px 0; width: 50%; text-align: right;"><strong>Client:</strong> <span t-field="o.partner_id.name"/></td>
+                            </tr>
+                        </table>
+
+                        <!-- Checklist table -->
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <thead>
+                                <tr style="background-color: #333; color: #fff;">
+                                    <th style="padding: 6px 8px; border: 1px solid #333; text-align: center; width: 6%;">#</th>
+                                    <th style="padding: 6px 8px; border: 1px solid #333;">Checklist Item</th>
+                                    <th style="padding: 6px 8px; border: 1px solid #333; text-align: center; width: 15%;">Condition</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="o.checklist_ids" t-as="checklist">
+                                    <tr>
+                                        <td style="padding: 5px 8px; border: 1px solid #ccc; text-align: center;"><span t-esc="checklist_index + 1"/></td>
+                                        <td style="padding: 5px 8px; border: 1px solid #ccc;"><span t-field="checklist.name"/></td>
+                                        <td style="padding: 5px 8px; border: 1px solid #ccc; text-align: center;">&#9744;</td>
+                                    </tr>
+                                </t>
+                                <t t-if="not o.checklist_ids">
+                                    <tr>
+                                        <td colspan="3" style="padding: 10px 8px; border: 1px solid #ccc; text-align: center; color: #999;">
+                                            No checklist items attached to this Repair Order.
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+
+                        <!-- Signature columns -->
+                        <table style="width: 100%; border-collapse: collapse; margin-top: 60px;">
+                            <tr>
+                                <td style="width: 45%; text-align: center; padding-top: 80px; border-top: 1px solid #333;">
+                                    <strong>Technician</strong><br/>
+                                    <span style="font-size: 10px; color: #666;">(Name &amp; Signature)</span>
+                                </td>
+                                <td style="width: 10%;"></td>
+                                <td style="width: 45%; text-align: center; padding-top: 80px; border-top: 1px solid #333;">
+                                    <strong>Client</strong><br/>
+                                    <span style="font-size: 10px; color: #666;">(Name &amp; Signature)</span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <!-- ============================================================
+         4a. CAR DIAGNOSIS REQUEST REPORT
+         Diagnosis work instruction sheet for the technician
+         ============================================================ -->
+    <template id="report_car_diagnosis_request_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)"/>
+                    <div class="page">
+                        <!-- Title -->
+                        <h2 style="text-align: center; font-size: 20px; font-weight: bold; margin: 0 0 2px 0; letter-spacing: 1px;">CAR DIAGNOSIS REQUEST</h2>
+                        <p style="text-align: center; font-size: 11px; color: #666; margin: 0 0 15px 0;">Work Instruction for Technician</p>
+
+                        <!-- Header info -->
+                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+                            <tr>
+                                <td style="padding: 4px 0; width: 50%;"><strong>Ref. No.:</strong> <span t-field="o.name"/></td>
+                                <td style="padding: 4px 0; width: 50%; text-align: right;">
+                                    <strong>Received Date:</strong>
+                                    <span t-field="o.date_receipt" t-options="{'widget': 'date'}"/>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- Client &amp; Vehicle -->
+                        <h5 style="font-size: 14px; font-weight: bold; border-bottom: 2px solid #333; padding-bottom: 4px; margin: 0 0 8px 0;">Client &amp; Vehicle</h5>
+                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+                            <tr>
+                                <td style="padding: 5px 8px; font-weight: bold; width: 22%; border: 1px solid #ddd; background-color: #f5f5f5;">Client</td>
+                                <td style="padding: 5px 8px; width: 28%; border: 1px solid #ddd;"><span t-field="o.partner_id.name"/></td>
+                                <td style="padding: 5px 8px; font-weight: bold; width: 22%; border: 1px solid #ddd; background-color: #f5f5f5;">Phone</td>
+                                <td style="padding: 5px 8px; width: 28%; border: 1px solid #ddd;"><span t-field="o.phone"/></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 5px 8px; font-weight: bold; border: 1px solid #ddd; background-color: #f5f5f5;">License Plate</td>
+                                <td style="padding: 5px 8px; border: 1px solid #ddd;"><span t-esc="o.line_ids[:1].license_plate or ''"/></td>
+                                <td style="padding: 5px 8px; font-weight: bold; border: 1px solid #ddd; background-color: #f5f5f5;">Model</td>
+                                <td style="padding: 5px 8px; border: 1px solid #ddd;"><span t-esc="o.line_ids[:1].model_id.name or ''"/></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 5px 8px; font-weight: bold; border: 1px solid #ddd; background-color: #f5f5f5;">Chassis No.</td>
+                                <td style="padding: 5px 8px; border: 1px solid #ddd;"><span t-esc="o.line_ids[:1].chassis_number or ''"/></td>
+                                <td style="padding: 5px 8px; font-weight: bold; border: 1px solid #ddd; background-color: #f5f5f5;">Odometer</td>
+                                <td style="padding: 5px 8px; border: 1px solid #ddd;"><span t-esc="o.line_ids[:1].odometer or 0.0"/></td>
+                            </tr>
+                        </table>
+
+                        <!-- Subject / complaint -->
+                        <h5 style="font-size: 14px; font-weight: bold; border-bottom: 2px solid #333; padding-bottom: 4px; margin: 0 0 8px 0;">Subject / Complaint</h5>
+                        <div style="border: 1px solid #ddd; border-radius: 4px; padding: 8px 12px; margin-bottom: 15px; min-height: 40px;">
+                            <span t-field="o.subject"/>
+                        </div>
+
+                        <!-- Assigned Technician -->
+                        <h5 style="font-size: 14px; font-weight: bold; border-bottom: 2px solid #333; padding-bottom: 4px; margin: 0 0 8px 0;">Assigned Technician</h5>
+                        <div style="border: 1px solid #ddd; border-radius: 4px; padding: 8px 12px; margin-bottom: 15px;">
+                            <span t-field="o.assigned_id.name"/>
+                        </div>
+
+                        <!-- Signature columns -->
+                        <table style="width: 100%; border-collapse: collapse; margin-top: 60px;">
+                            <tr>
+                                <td style="width: 45%; text-align: center; padding-top: 80px; border-top: 1px solid #333;">
+                                    <strong>Technician</strong><br/>
+                                    <span style="font-size: 10px; color: #666;">(Name &amp; Signature)</span>
+                                </td>
+                                <td style="width: 10%;"></td>
+                                <td style="width: 45%; text-align: center; padding-top: 80px; border-top: 1px solid #333;">
+                                    <strong>Service Manager</strong><br/>
+                                    <span style="font-size: 10px; color: #666;">(Name &amp; Signature)</span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <!-- ============================================================
+         4b. CAR DIAGNOSIS RESULT REPORT
+         Technician inspection result (result, hours, spare parts)
+         ============================================================ -->
+    <template id="report_car_diagnosis_result_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)"/>
+                    <div class="page">
+                        <!-- Title -->
+                        <h2 style="text-align: center; font-size: 20px; font-weight: bold; margin: 0 0 2px 0; letter-spacing: 1px;">CAR DIAGNOSIS RESULT</h2>
+                        <p style="text-align: center; font-size: 11px; color: #666; margin: 0 0 15px 0;">Technician Inspection Result</p>
+
+                        <!-- Header info -->
+                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+                            <tr>
+                                <td style="padding: 4px 0; width: 50%;"><strong>Ref. No.:</strong> <span t-field="o.name"/></td>
+                                <td style="padding: 4px 0; width: 50%; text-align: right;"><strong>Client:</strong> <span t-field="o.partner_id.name"/></td>
+                            </tr>
+                        </table>
+
+                        <!-- Diagnosis records -->
+                        <t t-foreach="o.diagnosis_ids" t-as="diag">
+                            <div style="margin-bottom: 20px;">
+                                <h5 style="font-size: 14px; font-weight: bold; background-color: #333; color: #fff; padding: 6px 10px; border-radius: 4px; margin: 0 0 8px 0;">
+                                    Diagnosis: <span t-field="diag.name"/>
+                                    <span style="background-color: #6c757d; color: white; padding: 2px 8px; border-radius: 10px; font-size: 11px; margin-left: 8px;" t-field="diag.state"/>
+                                </h5>
+                                <table style="width: 100%; border-collapse: collapse; margin-bottom: 10px;">
+                                    <tr>
+                                        <td style="padding: 5px 8px; font-weight: bold; width: 22%; border: 1px solid #ddd; background-color: #f5f5f5;">Technician</td>
+                                        <td style="padding: 5px 8px; width: 28%; border: 1px solid #ddd;"><span t-field="diag.technician_id.name"/></td>
+                                        <td style="padding: 5px 8px; font-weight: bold; width: 22%; border: 1px solid #ddd; background-color: #f5f5f5;">Estimated Hours</td>
+                                        <td style="padding: 5px 8px; width: 28%; border: 1px solid #ddd;"><span t-field="diag.estimated_hours"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 5px 8px; font-weight: bold; border: 1px solid #ddd; background-color: #f5f5f5;">Service Product</td>
+                                        <td colspan="3" style="padding: 5px 8px; border: 1px solid #ddd;"><span t-field="diag.service_product_id.name"/></td>
+                                    </tr>
+                                </table>
+
+                                <!-- Diagnostic Result -->
+                                <h6 style="font-size: 13px; font-weight: bold; margin: 0 0 5px 0;">Diagnostic Result</h6>
+                                <div style="border: 1px solid #ddd; border-radius: 4px; padding: 8px 12px; margin-bottom: 10px; min-height: 40px;">
+                                    <span t-field="diag.diagnostic_result"/>
+                                </div>
+
+                                <!-- Recommended Spare Parts -->
+                                <h6 style="font-size: 13px; font-weight: bold; margin: 0 0 5px 0;">Recommended Spare Parts</h6>
+                                <table style="width: 100%; border-collapse: collapse;">
+                                    <thead>
+                                        <tr style="background-color: #333; color: #fff;">
+                                            <th style="padding: 6px 8px; border: 1px solid #333;">Product</th>
+                                            <th style="padding: 6px 8px; border: 1px solid #333; text-align: center; width: 12%;">Qty</th>
+                                            <th style="padding: 6px 8px; border: 1px solid #333; text-align: right; width: 18%;">Unit Price</th>
+                                            <th style="padding: 6px 8px; border: 1px solid #333; text-align: right; width: 18%;">Subtotal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="diag.spare_part_ids" t-as="part">
+                                            <tr>
+                                                <td style="padding: 5px 8px; border: 1px solid #ccc;"><span t-field="part.product_id.name"/></td>
+                                                <td style="padding: 5px 8px; border: 1px solid #ccc; text-align: center;"><span t-field="part.quantity"/></td>
+                                                <td style="padding: 5px 8px; border: 1px solid #ccc; text-align: right;"><span t-field="part.unit_price"/></td>
+                                                <td style="padding: 5px 8px; border: 1px solid #ccc; text-align: right;">
+                                                    <span t-esc="'%0.2f' % (part.quantity * part.unit_price)"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                        <t t-if="not diag.spare_part_ids">
+                                            <tr>
+                                                <td colspan="4" style="padding: 8px; border: 1px solid #ccc; text-align: center; color: #999;">
+                                                    No spare parts recommended.
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </t>
+
+                        <t t-if="not o.diagnosis_ids">
+                            <div style="border: 1px solid #b8daff; border-radius: 4px; padding: 12px; background-color: #d1ecf1; text-align: center; color: #0c5460;">
+                                No diagnosis records found for this Repair Order.
+                            </div>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <!-- ============================================================
+         5. CAR WORK ORDERS REPORT
+         Repair work details (hours, status, technician)
+         ============================================================ -->
+    <template id="report_car_work_orders_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)"/>
+                    <div class="page">
+                        <!-- Title -->
+                        <h2 style="text-align: center; font-size: 20px; font-weight: bold; margin: 0 0 2px 0; letter-spacing: 1px;">CAR WORK ORDERS</h2>
+                        <p style="text-align: center; font-size: 11px; color: #666; margin: 0 0 15px 0;">Repair Work Details</p>
+
+                        <!-- Header info -->
+                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+                            <tr>
+                                <td style="padding: 4px 0; width: 50%;"><strong>Ref. No.:</strong> <span t-field="o.name"/></td>
+                                <td style="padding: 4px 0; width: 50%; text-align: right;"><strong>Client:</strong> <span t-field="o.partner_id.name"/></td>
+                            </tr>
+                        </table>
+
+                        <!-- Work Orders table -->
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <thead>
+                                <tr style="background-color: #333; color: #fff;">
+                                    <th style="padding: 6px 8px; border: 1px solid #333;">Work Order</th>
+                                    <th style="padding: 6px 8px; border: 1px solid #333;">Technician</th>
+                                    <th style="padding: 6px 8px; border: 1px solid #333; text-align: center;">Date</th>
+                                    <th style="padding: 6px 8px; border: 1px solid #333; text-align: center;">Duration (h)</th>
+                                    <th style="padding: 6px 8px; border: 1px solid #333; text-align: center;">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="o.work_order_ids" t-as="wo">
+                                    <tr>
+                                        <td style="padding: 5px 8px; border: 1px solid #ccc;"><span t-field="wo.name"/></td>
+                                        <td style="padding: 5px 8px; border: 1px solid #ccc;"><span t-field="wo.technician_id.name"/></td>
+                                        <td style="padding: 5px 8px; border: 1px solid #ccc; text-align: center;"><span t-field="wo.date"/></td>
+                                        <td style="padding: 5px 8px; border: 1px solid #ccc; text-align: center;"><span t-field="wo.duration_hours"/></td>
+                                        <td style="padding: 5px 8px; border: 1px solid #ccc; text-align: center;"><span t-field="wo.state"/></td>
+                                    </tr>
+                                </t>
+                                <t t-if="not o.work_order_ids">
+                                    <tr>
+                                        <td colspan="5" style="padding: 10px 8px; border: 1px solid #ccc; text-align: center; color: #999;">
+                                            No work orders found for this Repair Order.
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+
+                        <!-- Signature columns -->
+                        <table style="width: 100%; border-collapse: collapse; margin-top: 60px;">
+                            <tr>
+                                <td style="width: 45%; text-align: center; padding-top: 80px; border-top: 1px solid #333;">
+                                    <strong>Technician</strong><br/>
+                                    <span style="font-size: 10px; color: #666;">(Name &amp; Signature)</span>
+                                </td>
+                                <td style="width: 10%;"></td>
+                                <td style="width: 45%; text-align: center; padding-top: 80px; border-top: 1px solid #333;">
+                                    <strong>Service Manager</strong><br/>
+                                    <span style="font-size: 10px; color: #666;">(Name &amp; Signature)</span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <!-- ============================================================
+         6. CAR INVOICE REPORT
+         Cost estimate / billing summary (service + spare parts)
+         sourced from the linked Sale Order / Invoice
+         ============================================================ -->
+    <template id="report_car_invoice_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)"/>
+                    <div class="page">
+                        <!-- Title -->
+                        <h2 style="text-align: center; font-size: 20px; font-weight: bold; margin: 0 0 2px 0; letter-spacing: 1px;">CAR REPAIR INVOICE</h2>
+                        <p style="text-align: center; font-size: 11px; color: #666; margin: 0 0 15px 0;">Cost Estimate / Billing Summary</p>
+
+                        <!-- Header info -->
+                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+                            <tr>
+                                <td style="padding: 4px 0; width: 50%;"><strong>Ref. No.:</strong> <span t-field="o.name"/></td>
+                                <td style="padding: 4px 0; width: 50%; text-align: right;"><strong>Client:</strong> <span t-field="o.partner_id.name"/></td>
+                            </tr>
+                        </table>
+
+                        <t t-set="sale_order" t-value="o.sale_order_id"/>
+                        <t t-if="sale_order">
+                            <h5 style="font-size: 14px; font-weight: bold; border-bottom: 2px solid #333; padding-bottom: 4px; margin: 0 0 8px 0;">Sale Order: <span t-field="sale_order.name"/></h5>
+                            <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+                                <thead>
+                                    <tr style="background-color: #333; color: #fff;">
+                                        <th style="padding: 6px 8px; border: 1px solid #333;">Product / Service</th>
+                                        <th style="padding: 6px 8px; border: 1px solid #333; text-align: center; width: 10%;">Qty</th>
+                                        <th style="padding: 6px 8px; border: 1px solid #333; text-align: right; width: 15%;">Unit Price</th>
+                                        <th style="padding: 6px 8px; border: 1px solid #333; text-align: right; width: 15%;">Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="sale_order.order_line" t-as="line">
+                                        <tr>
+                                            <td style="padding: 5px 8px; border: 1px solid #ccc;"><span t-field="line.name"/></td>
+                                            <td style="padding: 5px 8px; border: 1px solid #ccc; text-align: center;"><span t-field="line.product_uom_qty"/></td>
+                                            <td style="padding: 5px 8px; border: 1px solid #ccc; text-align: right;"><span t-field="line.price_unit"/></td>
+                                            <td style="padding: 5px 8px; border: 1px solid #ccc; text-align: right;"><span t-field="line.price_subtotal"/></td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="3" style="padding: 5px 8px; border: 1px solid #ccc; text-align: right; font-weight: bold; background-color: #f5f5f5;">Untaxed Amount</td>
+                                        <td style="padding: 5px 8px; border: 1px solid #ccc; text-align: right; background-color: #f5f5f5;"><span t-field="sale_order.amount_untaxed"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3" style="padding: 5px 8px; border: 1px solid #ccc; text-align: right; font-weight: bold; background-color: #f5f5f5;">Tax</td>
+                                        <td style="padding: 5px 8px; border: 1px solid #ccc; text-align: right; background-color: #f5f5f5;"><span t-field="sale_order.amount_tax"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3" style="padding: 5px 8px; border: 1px solid #ccc; text-align: right; font-weight: bold; background-color: #e9ecef;">Total</td>
+                                        <td style="padding: 5px 8px; border: 1px solid #ccc; text-align: right; font-weight: bold; background-color: #e9ecef;"><span t-field="sale_order.amount_total"/></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </t>
+                        <t t-else="">
+                            <div style="border: 1px solid #b8daff; border-radius: 4px; padding: 12px; background-color: #d1ecf1; text-align: center; color: #0c5460;">
+                                No Sale Order linked to this Repair Order yet.
+                            </div>
+                        </t>
+
+                        <!-- Signature columns -->
+                        <table style="width: 100%; border-collapse: collapse; margin-top: 60px;">
+                            <tr>
+                                <td style="width: 45%; text-align: center; padding-top: 80px; border-top: 1px solid #333;">
+                                    <strong>Service Manager</strong><br/>
+                                    <span style="font-size: 10px; color: #666;">(Name &amp; Signature)</span>
+                                </td>
+                                <td style="width: 10%;"></td>
+                                <td style="width: 45%; text-align: center; padding-top: 80px; border-top: 1px solid #333;">
+                                    <strong>Client</strong><br/>
+                                    <span style="font-size: 10px; color: #666;">(Name &amp; Signature)</span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

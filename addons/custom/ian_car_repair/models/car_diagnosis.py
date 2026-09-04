@@ -36,11 +36,13 @@ class CarDiagnosis(models.Model):
     technician_id = fields.Many2one(
         'res.users',
         string='Technician',
+        related='repair_order_id.assigned_id',
+        store=True,
+        readonly=True,
         tracking=True,
     )
     diagnostic_result = fields.Html(
         string='Diagnostic Result',
-        tracking=True,
     )
     estimated_hours = fields.Float(string='Estimated Hours')
     service_product_id = fields.Many2one(
@@ -52,6 +54,15 @@ class CarDiagnosis(models.Model):
         'car.diagnosis.spare.part',
         'diagnosis_id',
         string='Spare Parts',
+    )
+    sale_order_id = fields.Many2one(
+        'sale.order',
+        string='Sale Order',
+        ondelete='set null',
+    )
+    sale_order_count = fields.Integer(
+        string='Sale Order Count',
+        compute='_compute_sale_order_count',
     )
 
     state = fields.Selection(
@@ -69,6 +80,11 @@ class CarDiagnosis(models.Model):
     @api.model
     def _get_default_name(self):
         return self.env['ir.sequence'].next_by_code('car.diagnosis') or 'New'
+
+    @api.depends('sale_order_id')
+    def _compute_sale_order_count(self):
+        for record in self:
+            record.sale_order_count = 1 if record.sale_order_id else 0
 
     def action_start(self):
         """Start diagnosis: set state to IN DIAGNOSIS."""
@@ -120,12 +136,29 @@ class CarDiagnosis(models.Model):
         sale_order.write({
             'car_diagnosis_id': self.id,
         })
+        self.write({
+            'sale_order_id': sale_order.id,
+        })
 
         return {
             'name': 'Quotation',
             'type': 'ir.actions.act_window',
             'res_model': 'sale.order',
             'res_id': sale_order.id,
+            'view_mode': 'form',
+            'target': 'current',
+        }
+
+    def action_view_sale_order(self):
+        """Open the linked sale order form."""
+        self.ensure_one()
+        if not self.sale_order_id:
+            return False
+        return {
+            'name': 'Sale Order',
+            'type': 'ir.actions.act_window',
+            'res_model': 'sale.order',
+            'res_id': self.sale_order_id.id,
             'view_mode': 'form',
             'target': 'current',
         }

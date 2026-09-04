@@ -30,18 +30,10 @@
                             string="Create Car Diagnosis"
                             class="oe_highlight"
                             invisible="state != 'draft'"/>
-                    <button name="action_create_quotation" type="object"
-                            string="Create Quotation"
-                            class="oe_highlight"
-                            invisible="state != 'in_progress'"/>
                     <button name="action_to_progress" type="object"
                             string="Start Work"
                             class="oe_highlight"
                             invisible="state != 'draft'"/>
-                    <button name="action_create_work_order" type="object"
-                            string="Create Work Order"
-                            class="oe_highlight"
-                            invisible="state != 'in_progress'"/>
                     <button name="action_to_done" type="object"
                             string="Mark Done"
                             class="oe_highlight"
@@ -116,7 +108,7 @@
                                 </field>
                             </group>
                             <group string="WORK ORDERS" invisible="not work_order_ids">
-                                <field name="work_order_ids" readonly="1">
+                                <field name="work_order_ids" readonly="1"  nolabel="1">
                                     <list string="Work Orders">
                                         <field name="name"/>
                                         <field name="technician_id"/>

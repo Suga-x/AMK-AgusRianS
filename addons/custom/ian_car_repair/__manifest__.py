@@ -31,6 +31,8 @@
         'views/car_work_order_views.xml',
         'views/sale_order_views.xml',
         'views/menu_views.xml',
+        'report/car_repair_report_templates.xml',
+        'report/car_repair_report_views.xml',
     ],
     'demo': [
         'demo/car_repair_demo.xml',

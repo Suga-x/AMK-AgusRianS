@@ -176,10 +176,9 @@ class CarRepairOrder(models.Model):
     def action_create_work_order(self):
         """Create a work order linked to this repair order."""
         self.ensure_one()
-        vals = {'repair_order_id': self.id}
-        if self.assigned_id:
-            vals['technician_id'] = self.assigned_id.id
-        work_order = self.env['car.work.order'].create(vals)
+        work_order = self.env['car.work.order'].create({
+            'repair_order_id': self.id,
+        })
         return {
             'name': 'Car Work Order',
             'type': 'ir.actions.act_window',
@@ -297,7 +296,6 @@ class CarRepairOrderLine(models.Model):
     _name = 'car.repair.order.line'
     _description = 'Car Repair Order Vehicle Line'
     _order = 'id'
-    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     repair_order_id = fields.Many2one(
         'car.repair.order',
